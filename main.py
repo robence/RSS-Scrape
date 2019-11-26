@@ -66,7 +66,7 @@ def get_episodes(session_requests):
         temp = tree.xpath(
             "/html/body/div/div[3]/div[2]/ul[%s]/li[1]/a/strong[1]" % (str(x)))
 
-        print(date)
+        # print(date)
         # current_episode_date = (None, date[0].text)[len(date) > 0]
         current_episode_date = None
         if len(date) > 0:
