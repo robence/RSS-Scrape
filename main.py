@@ -54,7 +54,11 @@ def get_episodes(session_requests):
     current_episodes = []
 
     tree = html.fromstring(result.content)
-    for x in range(1, 5):
+
+    x = 1
+    canContinue = True
+
+    while canContinue:
 
         date = tree.xpath(
             "/html/body/div/div[3]/div[2]/strong[%s]" % (str(x)))
@@ -62,14 +66,26 @@ def get_episodes(session_requests):
         temp = tree.xpath(
             "/html/body/div/div[3]/div[2]/ul[%s]/li[1]/a/strong[1]" % (str(x)))
 
-        current_episode_date = date[0].text
-        current_episode_title = "%s %s" % (temp[0].text, temp[0].tail.rstrip())
+        print(date)
+        # current_episode_date = (None, date[0].text)[len(date) > 0]
+        current_episode_date = None
+        if len(date) > 0:
+            current_episode_date = date[0].text
+        else:
+            current_episode_date = None
 
-        current_episode = {
-            'date': current_episode_date,
-            'title': current_episode_title
-        }
-        current_episodes.append(current_episode)
+        if current_episode_date == None:
+            canContinue = False
+        else:
+            current_episode_title = "%s %s" % (temp[0].text, temp[0].tail.rstrip())
+
+            current_episode = {
+                'date': current_episode_date,
+                'title': current_episode_title
+            }
+            current_episodes.append(current_episode)
+
+        x += 1
 
     return current_episodes
 
